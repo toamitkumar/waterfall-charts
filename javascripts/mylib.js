@@ -24,7 +24,7 @@ $.fn.waterfallChart = function(options, yaxis_max) {
 	
 	// loop through all except the last one - last one is Total
 	for (var i=0; i < barCount-1; i++) {
-		seriesOptions.push($.lineConnector([[i, data[i].low], [i+1, data[i].low]]));
+		seriesOptions.push($.lineConnector([[i, data[i].y], [i+1, data[i].y]]));
 	};
 			
 	chartOptions = {
@@ -47,7 +47,17 @@ $.fn.waterfallChart = function(options, yaxis_max) {
 			lineWidth: 2,
 			lineColor: 'black'
 		},	
-		plotOptions: {allowPointSelect: true},
+		plotOptions: {
+			allowPointSelect: true,
+			column: {
+				dataLabels: {
+					enabled: true,
+					formatter: function(){
+						return this.point.y - this.point.low;
+					}
+				}
+			}
+		},
 	  series: seriesOptions
 	}
 	return new Highcharts.Chart(chartOptions);
